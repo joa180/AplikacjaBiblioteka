@@ -1,0 +1,78 @@
+﻿@model LibSys.Models.Entities.Borrowing
+@using Microsoft.AspNetCore.Mvc.Rendering
+@inject Microsoft.AspNetCore.Identity.SignInManager<Microsoft.AspNetCore.Identity.IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Dodawanie wypożyczenia";
+    var bookList = ViewData["BookId"] as SelectList;
+    // dla Admina ViewData["ReaderId"] jest SelectList, dla Usera – Guid
+    SelectList readerList = null;
+    Guid? currentReaderId = null;
+    if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        readerList = (SelectList)ViewData["ReaderId"];
+    }
+    else if (ViewData["ReaderId"] is Guid g)
+    {
+        currentReaderId = g;
+    }
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6 col-lg-4">
+        <form asp-action="Create" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="BookId" class="form-label"></label>
+                <select asp-for="BookId" class="form-select" asp-items="bookList">
+                    <option value="">-- wybierz książkę --</option>
+                </select>
+                <span asp-validation-for="BookId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="BorrowDate" class="form-label"></label>
+                <input asp-for="BorrowDate" type="date" class="form-control" />
+                <span asp-validation-for="BorrowDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="ReturnDate" class="form-label"></label>
+                <input asp-for="ReturnDate" type="date" class="form-control" />
+                <span asp-validation-for="ReturnDate" class="text-danger"></span>
+            </div>
+
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                <div class="mb-3">
+                    <label asp-for="ReaderId" class="form-label"></label>
+                    <select asp-for="ReaderId" class="form-select" asp-items="readerList">
+                        <option value="">-- wybierz czytelnika --</option>
+                    </select>
+                    <span asp-validation-for="ReaderId" class="text-danger"></span>
+                </div>
+            }
+            else
+            {
+                <input asp-for="ReaderId" type="hidden" value="@currentReaderId" />
+            }
+
+            <div class="d-flex">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="bi bi-plus-lg"></i> Dodaj
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Anuluj
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

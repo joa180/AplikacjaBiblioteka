@@ -1,0 +1,64 @@
+/* Base font sizing */
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/* Ensure footer stays at bottom */
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+/* Focus outline styling */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/* Buttons */
+.btn {
+    transition: background-color 0.2s, color 0.2s, filter 0.2s, transform 0.1s;
+    border-radius: .375rem;
+}
+
+    .btn:hover {
+        filter: brightness(0.9);
+        transform: translateY(-1px);
+    }
+
+/* Card styling */
+.card {
+    border-radius: .5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+}
+
+/* Active link in navbar */
+.nav-link.active {
+    font-weight: 600;
+    color: #0d6efd !important;
+    border-bottom: 2px solid #0d6efd;
+}
+
+/* Headings and spacing */
+h1,
+.card-header h2 {
+    margin-bottom: 1rem;
+}
+
+.container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}

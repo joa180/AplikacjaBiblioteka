@@ -1,0 +1,43 @@
+﻿@model LibSys.Models.Entities.BookDefinition
+
+@{
+    ViewData["Title"] = "Szczegóły definicji książki";
+}
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2 class="h5 mb-0">Definicja książki</h2>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Tytuł</dt>
+            <dd class="col-sm-9">
+                <strong>@Model.Title</strong>
+            </dd>
+
+            <dt class="col-sm-3">Autor</dt>
+            <dd class="col-sm-9">
+                @Model.Author
+            </dd>
+        </dl>
+
+        <div class="mt-3">
+            <a asp-action="Index" class="btn btn-secondary">← Powrót do listy</a>
+
+            @* Przyciski „Edytuj” i „Usuń” tylko dla Admina *@
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-primary ms-2">
+                    Edytuj
+                </a>
+                <a asp-action="Delete"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-danger ms-2">
+                    Usuń
+                </a>
+            }
+        </div>
+    </div>
+</div>

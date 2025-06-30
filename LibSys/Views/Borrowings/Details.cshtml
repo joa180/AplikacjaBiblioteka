@@ -1,0 +1,39 @@
+﻿@model LibSys.Models.Entities.Borrowing
+
+@{
+    ViewData["Title"] = "Szczegóły wypożyczenia";
+}
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2 class="h5 mb-0">Szczegóły wypożyczenia</h2>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Data wypożyczenia</dt>
+            <dd class="col-sm-9">@Model.BorrowDate.ToString("dd.MM.yyyy")</dd>
+
+            <dt class="col-sm-3">Data zwrotu</dt>
+            <dd class="col-sm-9">@Model.ReturnDate.ToString("dd.MM.yyyy")</dd>
+
+            <dt class="col-sm-3">Książka</dt>
+            <dd class="col-sm-9">
+                <strong>@Model.Book.BookDefinition?.Title</strong><br />
+                <small class="text-muted">@Model.Book.BookDefinition?.Author</small>
+            </dd>
+
+            <dt class="col-sm-3">Czytelnik</dt>
+            <dd class="col-sm-9">@Model.Reader?.Name</dd>
+        </dl>
+
+        <div class="mt-3">
+            <a asp-action="Index" class="btn btn-secondary">← Powrót do listy</a>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary ms-2">Edytuj</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger ms-2">Usuń</a>
+            }
+        </div>
+    </div>
+</div>

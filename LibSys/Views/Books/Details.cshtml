@@ -1,0 +1,64 @@
+﻿@model LibSys.Models.Entities.Book
+
+@{
+    ViewData["Title"] = "Szczegóły książki";
+}
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2 class="h5 mb-0">Szczegóły książki</h2>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Okładka</dt>
+            <dd class="col-sm-9">
+                @if (!string.IsNullOrEmpty(Model.BookDefinition?.CoverImagePath))
+                {
+                    <img src="@Model.BookDefinition.CoverImagePath"
+                         alt="Okładka"
+                         class="img-fluid"
+                         style="max-height:200px; object-fit:cover;" />
+                }
+                else
+                {
+                    <div class="bg-light d-flex align-items-center justify-content-center"
+                         style="width:120px; height:200px; color:#666;">
+                        Brak okładki
+                    </div>
+                }
+            </dd>
+
+            <dt class="col-sm-3">Tytuł</dt>
+            <dd class="col-sm-9">
+                <strong>@Model.BookDefinition?.Title</strong>
+            </dd>
+
+            <dt class="col-sm-3">Autor</dt>
+            <dd class="col-sm-9">
+                @Model.BookDefinition?.Author
+            </dd>
+
+            <dt class="col-sm-3">Komentarz</dt>
+            <dd class="col-sm-9">
+                @Model.Comment ?? "<i>brak</i>"
+            </dd>
+
+            <dt class="col-sm-3">Status</dt>
+            <dd class="col-sm-9">
+                <span class="badge @(Model.Status == LibSys.Models.Entities.BookStatus.Available ? "bg-success" : "bg-warning")">
+                    @Model.Status
+                </span>
+            </dd>
+        </dl>
+
+        <div class="mt-3">
+            <a asp-action="Index" class="btn btn-secondary">← Powrót do listy</a>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary ms-2">Edytuj</a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger ms-2">Usuń</a>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<LibSys.Models.Dto.AvailableBookDto>
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Dostępne książki";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table id="dataTable" class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Okładka</th>
+            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+            {
+                <th>GUID</th>
+            }
+            <th>@Html.DisplayNameFor(m => m.First().Title)</th>
+            <th>@Html.DisplayNameFor(m => m.First().Author)</th>
+            <th>@Html.DisplayNameFor(m => m.First().Count)</th>
+            <th class="text-center">Akcja</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="width:80px">
+                    @if (!string.IsNullOrEmpty(item.CoverImagePath))
+                    {
+                        <img src="@item.CoverImagePath"
+                             alt="Okładka @item.Title"
+                             style="height:100px; object-fit:cover;" />
+                    }
+                    else
+                    {
+                        <div style="width:60px; height:100px;
+                                            background-color:#eee;
+                                            display:flex;
+                                            align-items:center;
+                                            justify-content:center;
+                                            font-size:0.8rem;
+                                            color:#666;">
+                            Brak
+                        </div>
+                    }
+                </td>
+
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <td>@item.Id</td>
+                }
+
+                <td>@item.Title</td>
+                <td>@item.Author</td>
+                <td>@item.Count</td>
+                <td class="text-center">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <a asp-controller="Borrowings"
+                           asp-action="Create"
+                           asp-route-itemId="@item.Id"
+                           class="btn btn-sm btn-primary">
+                            Wypożycz
+                        </a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/pl.json'
+                }
+            });
+        });
+    </script>
+}
