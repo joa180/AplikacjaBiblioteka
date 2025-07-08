@@ -1,5 +1,55 @@
-﻿@{
+﻿@using LibSys.Data
+@using LibSys.Models.Entities
+@inject ApplicationDbContext _db
+
+@{
     ViewData["Title"] = "Strona główna";
+    // Statystyki
+    var totalBooks = _db.Books.Count();
+    var borrowed = _db.Books.Count(b => b.Status == BookStatus.Borrowed);
+    var readersCount = _db.Readers.Count();
+    // Najnowsze definicje książek
+    var latestDefs = _db.BookDefinitions
+                        .OrderByDescending(d => d.Id)
+                        .Take(5)
+                        .ToList();
 }
 
-<h1 class="text-xxl-center mt-5">LibSys - Twój pomocnik w zarządzaniu biblioteką.</h1>
+<div class="container">
+
+    <!-- Nagłówek -->
+    <h1 class="text-xxl-center mt-5 mb-4">LibSys – Twój pomocnik w zarządzaniu biblioteką</h1>
+
+    <!-- Statystyki -->
+    <div class="row text-center mb-5">
+        <div class="col-md-4 mb-3">
+            <div class="card border-primary h-100">
+                <div class="card-body">
+                    <h2>@totalBooks</h2>
+                    <p class="mb-0">Wszystkich egzemplarzy</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card border-warning h-100">
+                <div class="card-body">
+                    <h2>@borrowed</h2>
+                    <p class="mb-0">Obecnie wypożyczonych</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card border-success h-100">
+                <div class="card-body">
+                    <h2>@readersCount</h2>
+                    <p class="mb-0">Zarejestrowanych czytelników</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <!-- Bootstrap JS + zależności powinny być już w layout -->
+}

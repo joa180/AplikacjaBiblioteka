@@ -41,7 +41,7 @@ namespace LibSys.Data.Migrations
 
                     b.HasIndex("BookDefinitionId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
 
                     b.HasData(
                         new
@@ -665,7 +665,7 @@ namespace LibSys.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BookDefinitions");
+                    b.ToTable("BookDefinitions", (string)null);
 
                     b.HasData(
                         new
@@ -877,7 +877,7 @@ namespace LibSys.Data.Migrations
 
                     b.HasIndex("ReaderId");
 
-                    b.ToTable("Borrowings");
+                    b.ToTable("Borrowings", (string)null);
 
                     b.HasData(
                         new
@@ -1213,7 +1213,7 @@ namespace LibSys.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LogEntries");
+                    b.ToTable("LogEntries", (string)null);
                 });
 
             modelBuilder.Entity("LibSys.Models.Entities.Reader", b =>
@@ -1245,7 +1245,7 @@ namespace LibSys.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Readers");
+                    b.ToTable("Readers", (string)null);
 
                     b.HasData(
                         new
