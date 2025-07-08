@@ -66,6 +66,7 @@ namespace LibSys.Controllers
             ViewData["BookId"] = new SelectList(
                 await _context.Books
                     .Include(b => b.BookDefinition)
+                    .Where(b => b.Status == BookStatus.Available)     // <-- tylko dostępne książki
                     .Select(b => new { b.Id, Title = b.BookDefinition.Title })
                     .ToListAsync(),
                 "Id", "Title", itemId);
@@ -132,6 +133,7 @@ namespace LibSys.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // POST: Borrowings/Return/5
         [HttpPost]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Return(Guid id)
@@ -215,13 +217,15 @@ namespace LibSys.Controllers
             var borrowing = await _context.Borrowings.FindAsync(id);
             if (borrowing != null)
             {
-                // przywracamy status książki
+                // 1) przywracamy status książki
                 var book = await _context.Books.FindAsync(borrowing.BookId);
                 if (book != null)
                 {
                     book.Status = BookStatus.Available;
                     _context.Books.Update(book);
                 }
+
+                // 2) usuwamy wypożyczenie
                 _context.Borrowings.Remove(borrowing);
                 await _context.SaveChangesAsync();
             }
@@ -233,6 +237,7 @@ namespace LibSys.Controllers
             ViewData["BookId"] = new SelectList(
                 await _context.Books
                     .Include(b => b.BookDefinition)
+                    .Where(b => b.Status == BookStatus.Available)   // <-- tylko dostępne książki
                     .Select(b => new { b.Id, Title = b.BookDefinition.Title })
                     .ToListAsync(),
                 "Id", "Title");
