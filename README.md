@@ -63,7 +63,7 @@ Oferuje:
 
 ## ⚙️ Instalacja i uruchomienie
 
-1. **Sklonuj repozytorium bądź pobierz**
+1. **Sklonuj repozytorium bądź pobierz zip**
 2. **Uruchom aplikację**
 3. **zastosuj migrację aby utworzyć bazę danych**
    ```bash
